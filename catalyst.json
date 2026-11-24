@@ -2,7 +2,9 @@
   "appsail": [
     {
       "source": ".",
-      "name": "ctrl-video-web"
+      "name": "AppSail",
+      "build_path": "./build",
+      "buildPath": "./build"
     }
   ]
 }

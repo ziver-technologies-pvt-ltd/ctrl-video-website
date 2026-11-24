@@ -36,6 +36,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NEXT_PUBLIC_SITE_URL: https://ctrl-video.ziver.co.in
 
+      - name: Prepare Catalyst AppSail Build Directory
+        run: |
+          mkdir -p build
+          cp -r .next public package.json package-lock.json next.config.ts app-config.json build/
+          # Ensure build directory has a copy of app-config.json and the root has absolute build_path
+          sed -i "s|\"./build\"|\"$GITHUB_WORKSPACE/build\"|g" app-config.json
+          sed -i "s|\"./build\"|\"$GITHUB_WORKSPACE/build\"|g" build/app-config.json
+          sed -i "s|\"./build\"|\"$GITHUB_WORKSPACE/build\"|g" catalyst.json
+
       - name: Install Zoho Catalyst CLI
         run: npm install -g zcatalyst-cli
 
