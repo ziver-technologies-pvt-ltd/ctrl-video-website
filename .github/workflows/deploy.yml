@@ -65,5 +65,5 @@ jobs:
             ARGS="$ARGS --org ${{ vars.CATALYST_ORG }}"
           fi
 
-          echo "Executing: catalyst deploy appsail $ARGS"
-          catalyst deploy appsail $ARGS
+          echo "Executing: catalyst deploy --only appsail $ARGS"
+          catalyst deploy --only appsail $ARGS
