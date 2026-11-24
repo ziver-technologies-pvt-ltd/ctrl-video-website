@@ -112,7 +112,7 @@ export function Hero({ release, initialOS = 'unknown' }: HeroProps) {
 
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
             <Link
-              href="/download/"
+              href="/download"
               className="md3-btn-outlined w-full sm:w-auto px-6 py-3.5 text-sm gap-2 block"
             >
               <span>All Packages & Checksums</span>
