@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 import { getLatestRelease } from '@/lib/github';
-import { detectOSFromUA } from '@/lib/detectOS';
 import { PLATFORMS } from '@/lib/platforms';
 import { SoftwareJsonLd } from '@/components/JsonLd';
 
@@ -14,10 +12,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function DownloadPage() {
-  const headersList = await headers();
-  const ua = headersList.get('user-agent') || '';
-  const detectedOS = detectOSFromUA(ua);
   const release = await getLatestRelease();
+  const detectedOS = 'linux';
 
   return (
     <>

@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
 import { getLatestRelease } from '@/lib/github';
 
+export const dynamic = 'force-static';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = 'https://ctrl-video.ziver.co.in';
   let releaseDate = new Date();
