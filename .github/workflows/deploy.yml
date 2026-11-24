@@ -16,10 +16,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 20
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: Install Project Dependencies
@@ -39,7 +39,5 @@ jobs:
       - name: Install Zoho Catalyst CLI
         run: npm install -g zcatalyst-cli
 
-      - name: Deploy to Zoho Catalyst AppSail (Production)
-        run: catalyst deploy --target production
-        env:
-          CATALYST_TOKEN: ${{ secrets.CATALYST_TOKEN }}
+      - name: Deploy to Zoho Catalyst AppSail
+        run: catalyst deploy appsail --token "${{ secrets.CATALYST_TOKEN }}" -ni
