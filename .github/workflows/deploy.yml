@@ -40,4 +40,21 @@ jobs:
         run: npm install -g zcatalyst-cli
 
       - name: Deploy to Zoho Catalyst AppSail
-        run: catalyst deploy appsail --token "${{ secrets.CATALYST_TOKEN }}" -ni
+        env:
+          ZCATALYST_NON_INTERACTIVE: "1"
+        run: |
+          ARGS="--token ${{ secrets.CATALYST_TOKEN }} -ni"
+          if [ -n "${{ secrets.CATALYST_PROJECT }}" ]; then
+            ARGS="$ARGS --project ${{ secrets.CATALYST_PROJECT }}"
+          elif [ -n "${{ vars.CATALYST_PROJECT }}" ]; then
+            ARGS="$ARGS --project ${{ vars.CATALYST_PROJECT }}"
+          fi
+
+          if [ -n "${{ secrets.CATALYST_ORG }}" ]; then
+            ARGS="$ARGS --org ${{ secrets.CATALYST_ORG }}"
+          elif [ -n "${{ vars.CATALYST_ORG }}" ]; then
+            ARGS="$ARGS --org ${{ vars.CATALYST_ORG }}"
+          fi
+
+          echo "Executing: catalyst deploy appsail $ARGS"
+          catalyst deploy appsail $ARGS
