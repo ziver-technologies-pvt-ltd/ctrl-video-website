@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'motion/react';
 import { PLATFORMS } from '@/lib/platforms';
 import { ReleaseData } from '@/lib/github';
 import { OS } from '@/lib/detectOS';
@@ -34,27 +35,40 @@ export function DownloadMatrix({ release, detectedOS = 'unknown' }: Props) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {PLATFORMS.map((p) => {
+        {PLATFORMS.map((p, idx) => {
           const primary = p.getPrimaryAsset(release);
           const secondary = p.getSecondaryAsset ? p.getSecondaryAsset(release) : undefined;
           const isTargetOS = p.id === detectedOS;
 
           return (
-            <div
+            <motion.div
               key={p.id}
-              className={`rounded-[16px] border p-6 flex flex-col justify-between transition-all md3-state-layer ${
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              className={`rounded-[16px] border p-6 flex flex-col justify-between transition-all relative overflow-hidden ${
                 isTargetOS
-                  ? 'bg-[#17171C] border-[#F59E0B] ring-2 ring-[#F59E0B]/20 shadow-xl shadow-[#F59E0B]/10'
+                  ? 'bg-[#17171C] border-[#F59E0B] ring-2 ring-[#F59E0B]/30 shadow-xl shadow-[#F59E0B]/10'
                   : 'bg-[#17171C] border-[#2E2E38] hover:border-[#4A4B56]'
               }`}
             >
+              {isTargetOS && (
+                <div className="absolute top-0 right-0 left-0 h-[2px] bg-gradient-to-r from-transparent via-[#F59E0B] to-transparent pointer-events-none" />
+              )}
+
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-bold text-[#EBEBF0]">{p.label}</h3>
                   {isTargetOS && (
-                    <span className="font-mono text-[10px] px-2.5 py-0.5 rounded-full bg-[#F59E0B] text-black font-semibold">
+                    <motion.span
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="font-mono text-[10px] px-2.5 py-0.5 rounded-full bg-[#F59E0B] text-black font-semibold shadow"
+                    >
                       Your OS Detected
-                    </span>
+                    </motion.span>
                   )}
                 </div>
 
@@ -63,8 +77,10 @@ export function DownloadMatrix({ release, detectedOS = 'unknown' }: Props) {
                   <div className="text-[11px] text-[#4A4B56]">{p.formatBadge}</div>
                 </div>
 
-                {/* Primary Download Button (MD3 Filled Button) */}
-                <a
+                {/* Primary Download Button */}
+                <motion.a
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   href={primary.url}
                   download
                   className="md3-btn-filled w-full py-2.5 text-xs gap-2 shadow"
@@ -75,19 +91,21 @@ export function DownloadMatrix({ release, detectedOS = 'unknown' }: Props) {
                   </svg>
                   <span>Download {primary.name.split('.').pop()?.toUpperCase()}</span>
                   <span className="opacity-80">({(primary.size / 1048576).toFixed(1)} MB)</span>
-                </a>
+                </motion.a>
 
-                {/* Secondary Option (MD3 Tonal Button) */}
+                {/* Secondary Option */}
                 {secondary && (
                   <div className="pt-1">
-                    <a
+                    <motion.a
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       href={secondary.url}
                       download
                       className="md3-btn-tonal w-full py-2 text-xs font-mono justify-between px-3"
                     >
                       <span className="truncate mr-2">Also: {secondary.name}</span>
                       <span>{(secondary.size / 1048576).toFixed(1)} MB</span>
-                    </a>
+                    </motion.a>
                   </div>
                 )}
 
@@ -116,7 +134,7 @@ export function DownloadMatrix({ release, detectedOS = 'unknown' }: Props) {
                   {primary.digest ? primary.digest.replace('sha256:', '').slice(0, 16) + '...' : 'Available on GitHub'}
                 </span>
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>

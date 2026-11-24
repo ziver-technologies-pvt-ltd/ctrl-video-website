@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export function Features() {
   const [activeTab, setActiveTab] = useState(0);
@@ -76,17 +77,26 @@ export function Features() {
         {/* Left: MD3 Segmented Feature Cards (5 cols) */}
         <div className="lg:col-span-5 space-y-3">
           {features.map((f, i) => (
-            <button
+            <motion.button
               key={f.id}
               type="button"
               onClick={() => setActiveTab(i)}
-              className={`w-full text-left p-4 rounded-[10px] border transition-all md3-state-layer ${
+              whileHover={{ x: 4, scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              className={`w-full text-left p-4 rounded-[12px] border transition-all relative overflow-hidden ${
                 activeTab === i
-                  ? 'bg-[#22222A] border-[#F59E0B] shadow-lg shadow-[#F59E0B]/10 ring-1 ring-[#F59E0B]/20'
+                  ? 'bg-[#22222A] border-[#F59E0B] shadow-lg shadow-[#F59E0B]/10 ring-1 ring-[#F59E0B]/30'
                   : 'bg-[#17171C] border-[#2E2E38] hover:border-[#4A4B56]'
               }`}
             >
-              <div className="flex items-center justify-between mb-1.5">
+              {activeTab === i && (
+                <motion.div
+                  layoutId="activeFeatureBar"
+                  className="absolute left-0 top-0 bottom-0 w-1 bg-[#F59E0B]"
+                  transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                />
+              )}
+              <div className="flex items-center justify-between mb-1.5 pl-2">
                 <span className="text-[11px] font-mono text-[#F59E0B] font-semibold">
                   {f.badge}
                 </span>
@@ -94,51 +104,66 @@ export function Features() {
                   {f.shortcut}
                 </span>
               </div>
-              <h3 className="text-sm font-semibold text-[#EBEBF0] mb-1">
+              <h3 className="text-sm font-semibold text-[#EBEBF0] mb-1 pl-2">
                 {f.title}
               </h3>
-              <p className="text-xs text-[#9EA0AB] line-clamp-2">
+              <p className="text-xs text-[#9EA0AB] line-clamp-2 pl-2">
                 {f.desc}
               </p>
-            </button>
+            </motion.button>
           ))}
         </div>
 
-        {/* Right: Active Feature Deep-Dive Card (7 cols) - Surface Level 1 */}
-        <div className="lg:col-span-7 bg-[#17171C] border border-[#2E2E38] rounded-[16px] p-6 sm:p-8 flex flex-col justify-between min-h-[420px] shadow-xl">
-          <div className="space-y-6">
-            <div className="flex items-center justify-between border-b border-[#2E2E38] pb-4">
-              <div>
-                <span className="text-xs font-mono uppercase tracking-wider text-[#F59E0B]">
-                  Feature Deep Dive
+        {/* Right: Active Feature Deep-Dive Card (7 cols) */}
+        <div className="lg:col-span-7 bg-[#17171C] border border-[#2E2E38] rounded-[16px] p-6 sm:p-8 flex flex-col justify-between min-h-[420px] shadow-xl relative overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={current.id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.25 }}
+              className="space-y-6"
+            >
+              <div className="flex items-center justify-between border-b border-[#2E2E38] pb-4">
+                <div>
+                  <span className="text-xs font-mono uppercase tracking-wider text-[#F59E0B]">
+                    Feature Deep Dive
+                  </span>
+                  <h3 className="text-xl font-bold text-[#EBEBF0] mt-1">
+                    {current.title}
+                  </h3>
+                </div>
+                <span className="keycap text-xs">
+                  {current.shortcut}
                 </span>
-                <h3 className="text-xl font-bold text-[#EBEBF0] mt-1">
-                  {current.title}
-                </h3>
               </div>
-              <span className="keycap text-xs">
-                {current.shortcut}
-              </span>
-            </div>
 
-            <p className="text-sm text-[#EBEBF0] leading-relaxed">
-              {current.desc}
-            </p>
+              <p className="text-sm text-[#EBEBF0] leading-relaxed">
+                {current.desc}
+              </p>
 
-            <div className="space-y-3 pt-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#9EA0AB] block">
-                Technical Highlights
-              </span>
-              <ul className="space-y-2.5">
-                {current.detailList.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-xs text-[#9EA0AB]">
-                    <span className="text-[#10B981] mt-0.5 font-bold">✓</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+              <div className="space-y-3 pt-2">
+                <span className="text-xs font-mono uppercase tracking-wider text-[#9EA0AB] block">
+                  Technical Highlights
+                </span>
+                <ul className="space-y-2.5">
+                  {current.detailList.map((item, idx) => (
+                    <motion.li
+                      key={idx}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.2, delay: idx * 0.08 }}
+                      className="flex items-start gap-2.5 text-xs text-[#9EA0AB]"
+                    >
+                      <span className="text-[#10B981] mt-0.5 font-bold">✓</span>
+                      <span>{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          </AnimatePresence>
 
           <div className="mt-8 pt-4 border-t border-[#2E2E38] flex items-center justify-between text-xs font-mono text-[#9EA0AB]">
             <span>Material Design 3 Architecture</span>

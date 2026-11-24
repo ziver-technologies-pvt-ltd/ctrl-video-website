@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export function FAQ() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -46,9 +47,13 @@ export function FAQ() {
         {faqs.map((f, i) => {
           const isOpen = openIdx === i;
           return (
-            <div
+            <motion.div
               key={i}
-              className="border border-[#2E2E38] rounded-[10px] bg-[#17171C] overflow-hidden transition-all"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              className="border border-[#2E2E38] rounded-[12px] bg-[#17171C] overflow-hidden transition-all"
             >
               <button
                 type="button"
@@ -56,16 +61,32 @@ export function FAQ() {
                 className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-[#EBEBF0] hover:text-[#F59E0B] transition-colors"
               >
                 <span>{f.q}</span>
-                <span className="font-mono text-xs text-[#9EA0AB] w-6 h-6 rounded-full bg-[#22222A] flex items-center justify-center">
-                  {isOpen ? '−' : '+'}
-                </span>
+                <motion.span
+                  animate={{ rotate: isOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="font-mono text-xs text-[#9EA0AB] w-7 h-7 rounded-full bg-[#22222A] flex items-center justify-center shrink-0 border border-[#2E2E38]"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </motion.span>
               </button>
-              {isOpen && (
-                <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 text-xs sm:text-sm text-[#9EA0AB] leading-relaxed border-t border-[#2E2E38]">
-                  {f.a}
-                </div>
-              )}
-            </div>
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 text-xs sm:text-sm text-[#9EA0AB] leading-relaxed border-t border-[#2E2E38]">
+                      {f.a}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           );
         })}
       </div>

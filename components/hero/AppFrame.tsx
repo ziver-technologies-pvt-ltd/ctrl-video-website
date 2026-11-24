@@ -1,11 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export function AppFrame() {
   const [activeTab, setActiveTab] = useState<'video' | 'audio'>('video');
   const [selectedFormat, setSelectedFormat] = useState('f399');
   const [trimMode, setTrimMode] = useState<'exact' | 'fast'>('exact');
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [playheadPos, setPlayheadPos] = useState(38); // percentage
+
+  // Simulated live playback playhead animation
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      setPlayheadPos((prev) => {
+        if (prev >= 68) return 26; // Loop within the active In/Out region (25% to 70%)
+        return prev + 0.35;
+      });
+    }, 50);
+    return () => clearInterval(interval);
+  }, [isPlaying]);
 
   const videoStreams = [
     { id: 'f399', res: '1080p60', fps: '60fps', codec: 'AV1', bitrate: '4.8 Mbps', size: '94 MB', hdr: false },
@@ -21,20 +36,28 @@ export function AppFrame() {
   ];
 
   return (
-    <div className="w-full rounded-[16px] border border-[#2E2E38] bg-[#17171C] shadow-2xl shadow-black/80 overflow-hidden font-sans text-xs">
-      {/* MD3 Desktop Title Bar (Window Controls + System Status) */}
+    <motion.div
+      initial={{ opacity: 0, y: 35, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.7, ease: [0.05, 0.7, 0.1, 1.0] }}
+      className="w-full rounded-[16px] border border-[#2E2E38] bg-[#17171C] shadow-2xl shadow-black/80 overflow-hidden font-sans text-xs relative"
+    >
+      {/* Top Accent Glow */}
+      <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#F59E0B]/60 to-transparent pointer-events-none" />
+
+      {/* MD3 Desktop Title Bar */}
       <div className="h-10 bg-[#17171C] border-b border-[#2E2E38] px-4 flex items-center justify-between select-none">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#EF4444]/90" />
-          <div className="w-3 h-3 rounded-full bg-[#F59E0B]/90" />
-          <div className="w-3 h-3 rounded-full bg-[#10B981]/90" />
+          <motion.div whileHover={{ scale: 1.2 }} className="w-3 h-3 rounded-full bg-[#EF4444]/90 cursor-pointer" />
+          <motion.div whileHover={{ scale: 1.2 }} className="w-3 h-3 rounded-full bg-[#F59E0B]/90 cursor-pointer" />
+          <motion.div whileHover={{ scale: 1.2 }} className="w-3 h-3 rounded-full bg-[#10B981]/90 cursor-pointer" />
           <span className="ml-3 font-mono text-[11px] text-[#EBEBF0] font-medium tracking-tight">
             ctrl+video · Flutter MD3 Native Workspace
           </span>
         </div>
         <div className="flex items-center gap-2 font-mono text-[10px] text-[#9EA0AB]">
-          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#22222A] text-[#10B981]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" /> yt-dlp Engine Ready
+          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#22222A] text-[#10B981]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" /> yt-dlp Engine Ready
           </span>
           <span>·</span>
           <span>libmpv v0.38</span>
@@ -43,16 +66,16 @@ export function AppFrame() {
 
       {/* Two-Pane Workspace Structure */}
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[460px]">
-        {/* Left Pane: Stream Inspector (5 cols) - Surface Level 1 */}
+        {/* Left Pane: Stream Inspector (5 cols) */}
         <div className="lg:col-span-5 p-4 border-b lg:border-b-0 lg:border-r border-[#2E2E38] flex flex-col justify-between bg-[#17171C]">
           <div className="space-y-4">
-            {/* MD3 Text Field Container */}
+            {/* Input Container */}
             <div>
               <label className="text-[10px] font-mono uppercase text-[#9EA0AB] tracking-wider mb-1.5 block">
                 Source Stream URL
               </label>
               <div className="flex items-center gap-2 px-3 py-2 bg-[#22222A] border border-[#4A4B56] rounded-[10px] font-mono text-[11px] text-[#EBEBF0] focus-within:border-[#F59E0B] focus-within:ring-1 focus-within:ring-[#F59E0B] transition-all">
-                <span className="text-[#F59E0B] font-bold">❯</span>
+                <span className="text-[#F59E0B] font-bold animate-pulse">❯</span>
                 <span className="truncate text-[#EBEBF0]">
                   https://www.youtube.com/watch?v=dQw4w9WgXcQ
                 </span>
@@ -62,29 +85,43 @@ export function AppFrame() {
               </div>
             </div>
 
-            {/* MD3 Segmented Button for Media Mode */}
+            {/* MD3 Segmented Button */}
             <div className="flex items-center justify-between border-b border-[#2E2E38] pb-3">
-              <div className="inline-flex rounded-full bg-[#22222A] p-0.5 border border-[#2E2E38]">
+              <div className="inline-flex rounded-full bg-[#22222A] p-0.5 border border-[#2E2E38] relative">
                 <button
                   type="button"
                   onClick={() => setActiveTab('video')}
-                  className={`px-3 py-1 rounded-full font-mono text-[11px] transition-all ${
+                  className={`px-3 py-1 rounded-full font-mono text-[11px] transition-all relative z-10 ${
                     activeTab === 'video'
-                      ? 'bg-[#EBEBF0] text-[#0F0F12] font-semibold shadow-sm'
+                      ? 'text-[#0F0F12] font-semibold'
                       : 'text-[#9EA0AB] hover:text-[#EBEBF0]'
                   }`}
                 >
+                  {activeTab === 'video' && (
+                    <motion.div
+                      layoutId="segmentedIndicator"
+                      className="absolute inset-0 bg-[#EBEBF0] rounded-full -z-10 shadow-sm"
+                      transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+                    />
+                  )}
                   Video + Audio
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab('audio')}
-                  className={`px-3 py-1 rounded-full font-mono text-[11px] transition-all ${
+                  className={`px-3 py-1 rounded-full font-mono text-[11px] transition-all relative z-10 ${
                     activeTab === 'audio'
-                      ? 'bg-[#EBEBF0] text-[#0F0F12] font-semibold shadow-sm'
+                      ? 'text-[#0F0F12] font-semibold'
                       : 'text-[#9EA0AB] hover:text-[#EBEBF0]'
                   }`}
                 >
+                  {activeTab === 'audio' && (
+                    <motion.div
+                      layoutId="segmentedIndicator"
+                      className="absolute inset-0 bg-[#EBEBF0] rounded-full -z-10 shadow-sm"
+                      transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+                    />
+                  )}
                   Audio Extraction
                 </button>
               </div>
@@ -93,75 +130,101 @@ export function AppFrame() {
               </span>
             </div>
 
-            {/* Stream List (MD3 Outlined Cards - 10px Radius) */}
+            {/* Stream List with AnimatePresence */}
             <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
-              {activeTab === 'video'
-                ? videoStreams.map((s) => (
-                    <div
-                      key={s.id}
-                      onClick={() => setSelectedFormat(s.id)}
-                      className={`p-3 rounded-[10px] cursor-pointer border transition-all flex items-center justify-between ${
-                        selectedFormat === s.id
-                          ? 'bg-[#2E2E38] border-[#F59E0B] ring-1 ring-[#F59E0B]/30'
-                          : 'bg-[#22222A] border-[#2E2E38] hover:border-[#4A4B56]'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <input
-                          type="radio"
-                          name="format"
-                          checked={selectedFormat === s.id}
-                          onChange={() => setSelectedFormat(s.id)}
-                          className="accent-[#F59E0B] w-3.5 h-3.5"
-                        />
-                        <div>
-                          <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#EBEBF0] font-semibold">
-                            <span>{s.res}</span>
-                            <span className="text-[#9EA0AB]">({s.fps})</span>
-                            {s.hdr && (
-                              <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-[#451A03] text-[#FDE68A] font-bold">
-                                HDR
-                              </span>
-                            )}
+              <AnimatePresence mode="wait">
+                {activeTab === 'video' ? (
+                  <motion.div
+                    key="video-list"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="space-y-2"
+                  >
+                    {videoStreams.map((s) => (
+                      <motion.div
+                        key={s.id}
+                        whileHover={{ scale: 1.01, x: 2 }}
+                        whileTap={{ scale: 0.99 }}
+                        onClick={() => setSelectedFormat(s.id)}
+                        className={`p-3 rounded-[10px] cursor-pointer border transition-all flex items-center justify-between ${
+                          selectedFormat === s.id
+                            ? 'bg-[#2E2E38] border-[#F59E0B] ring-1 ring-[#F59E0B]/30'
+                            : 'bg-[#22222A] border-[#2E2E38] hover:border-[#4A4B56]'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <input
+                            type="radio"
+                            name="format"
+                            checked={selectedFormat === s.id}
+                            onChange={() => setSelectedFormat(s.id)}
+                            className="accent-[#F59E0B] w-3.5 h-3.5"
+                          />
+                          <div>
+                            <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#EBEBF0] font-semibold">
+                              <span>{s.res}</span>
+                              <span className="text-[#9EA0AB]">({s.fps})</span>
+                              {s.hdr && (
+                                <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-[#451A03] text-[#FDE68A] font-bold">
+                                  HDR
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[10px] text-[#9EA0AB] font-mono">
+                              {s.codec} · {s.bitrate}
+                            </span>
                           </div>
-                          <span className="text-[10px] text-[#9EA0AB] font-mono">
-                            {s.codec} · {s.bitrate}
-                          </span>
                         </div>
-                      </div>
-                      <span className="font-mono text-[11px] text-[#EBEBF0] font-medium">{s.size}</span>
-                    </div>
-                  ))
-                : audioStreams.map((a) => (
-                    <div
-                      key={a.id}
-                      onClick={() => setSelectedFormat(a.id)}
-                      className={`p-3 rounded-[10px] cursor-pointer border transition-all flex items-center justify-between ${
-                        selectedFormat === a.id
-                          ? 'bg-[#2E2E38] border-[#F59E0B] ring-1 ring-[#F59E0B]/30'
-                          : 'bg-[#22222A] border-[#2E2E38] hover:border-[#4A4B56]'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <input
-                          type="radio"
-                          name="format"
-                          checked={selectedFormat === a.id}
-                          onChange={() => setSelectedFormat(a.id)}
-                          className="accent-[#F59E0B] w-3.5 h-3.5"
-                        />
-                        <div>
-                          <div className="font-mono text-[11px] text-[#EBEBF0] font-semibold">
-                            {a.codec}
+                        <span className="font-mono text-[11px] text-[#EBEBF0] font-medium">{s.size}</span>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="audio-list"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="space-y-2"
+                  >
+                    {audioStreams.map((a) => (
+                      <motion.div
+                        key={a.id}
+                        whileHover={{ scale: 1.01, x: 2 }}
+                        whileTap={{ scale: 0.99 }}
+                        onClick={() => setSelectedFormat(a.id)}
+                        className={`p-3 rounded-[10px] cursor-pointer border transition-all flex items-center justify-between ${
+                          selectedFormat === a.id
+                            ? 'bg-[#2E2E38] border-[#F59E0B] ring-1 ring-[#F59E0B]/30'
+                            : 'bg-[#22222A] border-[#2E2E38] hover:border-[#4A4B56]'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <input
+                            type="radio"
+                            name="format"
+                            checked={selectedFormat === a.id}
+                            onChange={() => setSelectedFormat(a.id)}
+                            className="accent-[#F59E0B] w-3.5 h-3.5"
+                          />
+                          <div>
+                            <div className="font-mono text-[11px] text-[#EBEBF0] font-semibold">
+                              {a.codec}
+                            </div>
+                            <span className="text-[10px] text-[#9EA0AB] font-mono">
+                              {a.bitrate}
+                            </span>
                           </div>
-                          <span className="text-[10px] text-[#9EA0AB] font-mono">
-                            {a.bitrate}
-                          </span>
                         </div>
-                      </div>
-                      <span className="font-mono text-[11px] text-[#EBEBF0] font-medium">{a.size}</span>
-                    </div>
-                  ))}
+                        <span className="font-mono text-[11px] text-[#EBEBF0] font-medium">{a.size}</span>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -170,7 +233,9 @@ export function AppFrame() {
             <span className="text-[10px] text-[#9EA0AB] font-mono">
               Container: <strong className="text-white">MP4 / MKV</strong>
             </span>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               type="button"
               className="md3-btn-filled px-4 py-2 text-xs gap-1.5 shadow-md"
             >
@@ -179,35 +244,57 @@ export function AppFrame() {
                 <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
               </svg>
               <span>Extract Stream</span>
-            </button>
+            </motion.button>
           </div>
         </div>
 
-        {/* Right Pane: Video Preview & Scrubber (7 cols) - Surface Level 0 */}
+        {/* Right Pane: Video Preview & Scrubber (7 cols) */}
         <div className="lg:col-span-7 p-4 flex flex-col justify-between bg-[#0F0F12]">
           {/* libmpv Player Canvas */}
           <div className="relative aspect-video w-full rounded-[12px] bg-[#0A0A0D] border border-[#2E2E38] overflow-hidden flex flex-col items-center justify-center group">
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#0F0F12] via-[#17171C] to-[#22222A] opacity-80" />
+            {/* Animated Canvas Gradient */}
+            <motion.div
+              animate={{
+                background: [
+                  'radial-gradient(circle at 30% 30%, #22222A 0%, #0F0F12 70%)',
+                  'radial-gradient(circle at 70% 60%, #2A241E 0%, #0F0F12 70%)',
+                  'radial-gradient(circle at 30% 30%, #22222A 0%, #0F0F12 70%)',
+                ],
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute inset-0 opacity-80"
+            />
 
             <div className="relative z-10 text-center space-y-2">
-              <div className="w-12 h-12 rounded-full bg-[#22222A] border border-[#4A4B56] flex items-center justify-center mx-auto text-[#F59E0B] shadow-lg group-hover:scale-105 transition-transform">
-                <svg className="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
+              <motion.button
+                type="button"
+                onClick={() => setIsPlaying(!isPlaying)}
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-12 h-12 rounded-full bg-[#22222A]/90 border border-[#4A4B56] flex items-center justify-center mx-auto text-[#F59E0B] shadow-xl backdrop-blur-sm cursor-pointer"
+              >
+                {isPlaying ? (
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                )}
+              </motion.button>
               <p className="font-mono text-[11px] text-[#EBEBF0]">
                 Hardware Accelerated libmpv Stream
               </p>
               <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#17171C] border border-[#2E2E38] font-mono text-[10px] text-[#10B981]">
-                <span>● Direct Stream Manifest</span>
-                <span>·</span>
-                <span>Sub-second Keyframe Seek</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-ping" />
+                <span>Active 60fps Stream Manifest</span>
               </div>
             </div>
 
             {/* Timestamp Badge */}
             <div className="absolute bottom-3 right-3 font-mono text-[11px] text-white bg-black/80 px-2.5 py-1 rounded-md border border-white/10">
-              00:01:42.500 / 00:03:32.000
+              00:01:{Math.floor(playheadPos).toString().padStart(2, '0')}.500 / 00:03:32.000
             </div>
           </div>
 
@@ -223,7 +310,7 @@ export function AppFrame() {
                 </span>
               </div>
 
-              {/* Exact vs Fast Mode (MD3 Pill Toggle) */}
+              {/* Exact vs Fast Mode Toggle */}
               <div className="flex items-center gap-1 bg-[#17171C] p-0.5 rounded-full border border-[#2E2E38]">
                 <button
                   type="button"
@@ -250,15 +337,15 @@ export function AppFrame() {
               </div>
             </div>
 
-            {/* Visual Scrubber Track */}
-            <div className="relative h-8 bg-[#17171C] rounded-[8px] border border-[#2E2E38] overflow-hidden select-none">
+            {/* Visual Scrubber Track with Active Animated Playhead */}
+            <div className="relative h-8 bg-[#17171C] rounded-[8px] border border-[#2E2E38] overflow-hidden select-none cursor-pointer">
               <div className="absolute inset-0 flex justify-between px-2 items-center opacity-25">
                 {Array.from({ length: 28 }).map((_, i) => (
                   <div key={i} className={`w-[1px] bg-white ${i % 4 === 0 ? 'h-4' : 'h-2'}`} />
                 ))}
               </div>
 
-              {/* Selected amber trimming slice (secondaryContainer) */}
+              {/* Selected amber trimming slice */}
               <div
                 className="absolute top-0 bottom-0 bg-[#451A03]/60 border-x-2 border-[#F59E0B]"
                 style={{ left: '25%', right: '30%' }}
@@ -271,11 +358,16 @@ export function AppFrame() {
                 </div>
               </div>
 
-              {/* Playhead */}
+              {/* Live Playhead with Smooth Pos Transition */}
               <div
                 className="absolute top-0 bottom-0 w-0.5 bg-white shadow-md shadow-white/80"
-                style={{ left: '48%' }}
-              />
+                style={{
+                  left: `${playheadPos}%`,
+                  transition: isPlaying ? 'left 50ms linear' : 'none',
+                }}
+              >
+                <div className="w-2 h-2 -ml-[3px] -top-1 bg-white rounded-full absolute shadow" />
+              </div>
             </div>
 
             {/* Trimming Readings */}
@@ -284,13 +376,14 @@ export function AppFrame() {
                 <span>IN: <strong className="text-white">00:01:14.250</strong></span>
                 <span>OUT: <strong className="text-white">00:02:48.800</strong></span>
               </div>
-              <div className="text-[#10B981] font-medium">
-                Trimmed Size: 42 MB (Saved 88%)
+              <div className="text-[#10B981] font-medium flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+                <span>Trimmed: 42 MB (Saved 88%)</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
