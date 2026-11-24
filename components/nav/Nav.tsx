@@ -74,7 +74,7 @@ export function Nav() {
             FAQ
           </Link>
           <Link
-            href="/download"
+            href="/download/"
             className="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-[#22222A] transition-colors"
           >
             Releases
@@ -97,7 +97,7 @@ export function Nav() {
           </a>
 
           <Link
-            href="/download"
+            href="/download/"
             className="md3-btn-filled px-4 py-1.5 text-xs gap-1.5"
           >
             <span>Download</span>

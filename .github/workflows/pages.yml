@@ -50,7 +50,9 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: |
+          ${{ steps.detect-package-manager.outputs.runner }} next build
+          touch out/.nojekyll
         env:
           GH_OWNER: ziver-technologies-pvt-ltd
           GH_REPO: ctrl-video
