@@ -1,36 +1,70 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #0E0E11;
-  --color-bg-raised: #131316;
-  --color-surface: #1E1F24;
-  --color-surface-high: #282A2F;
-  --color-surface-hover: #32353B;
-  --color-accent: #F59E0B;
-  --color-accent-hover: #D97706;
-  --color-accent-muted: #92400E;
-  --color-ink: #F4F4F5;
-  --color-ink-muted: #A1A1AA;
-  --color-ink-subtle: #71717A;
-  --color-border: #27272A;
-  --color-border-subtle: #1C1D21;
-  --color-success: #22C55E;
-  --color-warning: #F59E0B;
-  --color-error: #EF4444;
+  /* Google Material Design 3 (MD3) Dark Theme Color Tokens */
+  /* Sourced directly from ctrl-video/lib/app/theme.dart */
 
+  /* 5-Level Monochromatic Surface Elevation System */
+  --color-surface-0: #0F0F12; /* Base window background */
+  --color-surface-1: #17171C; /* Cards / sidebar rail / container-low */
+  --color-surface-2: #22222A; /* Secondary panels / text fields / container-high */
+  --color-surface-3: #2E2E38; /* Hovered / active / container-highest */
+  --color-surface-4: #3B3B48; /* Modals / popups / elevated bright */
+
+  /* MD3 Core System Colors */
+  --color-md-surface: var(--color-surface-0);
+  --color-md-surface-dim: #0F0F12;
+  --color-md-surface-bright: var(--color-surface-4);
+  --color-md-surface-container-lowest: #0A0A0D;
+  --color-md-surface-container-low: var(--color-surface-1);
+  --color-md-surface-container: var(--color-surface-1);
+  --color-md-surface-container-high: var(--color-surface-2);
+  --color-md-surface-container-highest: var(--color-surface-3);
+
+  /* Primary Accent & On-Primary */
+  --color-md-primary: #EBEBF0;
+  --color-md-on-primary: #0F0F12;
+  --color-md-primary-container: var(--color-surface-2);
+  --color-md-on-primary-container: #EBEBF0;
+
+  /* Secondary Signal Accent (Warm Amber from AppColors.accent) */
+  --color-md-secondary: #F59E0B;
+  --color-md-secondary-hover: #D97706;
+  --color-md-on-secondary: #000000;
+  --color-md-secondary-container: #451A03;
+  --color-md-on-secondary-container: #FDE68A;
+
+  /* Tertiary Accent (Metallic Gray Highlights) */
+  --color-md-tertiary: #B0B2B8;
+  --color-md-on-tertiary: #1E1F24;
+
+  /* Typography / Inks */
+  --color-md-on-surface: #EBEBF0;
+  --color-md-on-surface-variant: #9EA0AB;
+  --color-md-outline: #4A4B56;
+  --color-md-outline-variant: #2E2E38;
+
+  /* Status Colors */
+  --color-md-success: #10B981;
+  --color-md-warning: #F59E0B;
+  --color-md-error: #EF4444;
+
+  /* Typography Families */
   --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 
-  /* tasteskill developer tool design tokens: sharp & tactile */
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 6px;
-  --radius-xl: 8px;
+  /* MD3 Corner Radius System (theme.dart uses 10px for cards and inputs) */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 10px; /* Official ctrl-video card radius */
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
 }
 
 :root {
-  background-color: var(--color-bg);
-  color: var(--color-ink);
+  background-color: var(--color-surface-0);
+  color: var(--color-md-on-surface);
   color-scheme: dark;
 }
 
@@ -40,31 +74,141 @@ html {
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-ink);
+  background-color: var(--color-surface-0);
+  color: var(--color-md-on-surface);
   font-family: var(--font-sans);
   overflow-x: hidden;
 }
 
-/* Taste-skill Motion Layer & Micro-Interactions */
-.hover-lift {
-  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease, border-color 0.15s ease;
-}
-.hover-lift:hover {
-  transform: translateY(-2px);
-}
-.hover-lift:active {
-  transform: translateY(0px);
+/* ==========================================================
+   Google Material Design 3 (MD3) Motion & State Layers
+   ========================================================== */
+
+/* MD3 Emphasized Decelerate Curve (Used for Entrances & Dialogs) */
+.md3-motion-emphasized {
+  transition-timing-function: cubic-bezier(0.05, 0.7, 0.1, 1.0);
+  transition-duration: 400ms;
 }
 
-.btn-press {
-  transition: transform 0.08s ease, background-color 0.12s ease, opacity 0.12s ease;
+/* MD3 Standard Easing (Hover, State Changes) */
+.md3-motion-standard {
+  transition-timing-function: cubic-bezier(0.2, 0.0, 0, 1.0);
+  transition-duration: 200ms;
 }
-.btn-press:active {
+
+/* MD3 State Layer Overlay on Interactive Elements */
+.md3-state-layer {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.12s cubic-bezier(0.2, 0.0, 0, 1.0),
+              background-color 0.15s ease,
+              box-shadow 0.2s cubic-bezier(0.05, 0.7, 0.1, 1.0),
+              border-color 0.15s ease;
+}
+.md3-state-layer:hover {
+  transform: translateY(-2px);
+}
+.md3-state-layer:active {
   transform: scale(0.985);
 }
 
-/* Keycap tactile element */
+/* MD3 Component: Filled Button (Warm Amber Signal) */
+.md3-btn-filled {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: var(--color-md-secondary);
+  color: var(--color-md-on-secondary);
+  font-weight: 600;
+  transition: all 0.15s cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.md3-btn-filled:hover {
+  background-color: var(--color-md-secondary-hover);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+  transform: translateY(-1px);
+}
+.md3-btn-filled:active {
+  transform: scale(0.98);
+}
+
+/* MD3 Component: Outlined Button */
+.md3-btn-outlined {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: transparent;
+  color: var(--color-md-on-surface);
+  border: 1px solid var(--color-md-outline);
+  font-weight: 500;
+  transition: all 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+.md3-btn-outlined:hover {
+  background-color: rgba(235, 235, 240, 0.08); /* 8% state layer */
+  border-color: var(--color-md-on-surface);
+  transform: translateY(-1px);
+}
+.md3-btn-outlined:active {
+  transform: scale(0.98);
+}
+
+/* MD3 Component: Tonal Button */
+.md3-btn-tonal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: var(--color-surface-2);
+  color: var(--color-md-on-surface);
+  border: 1px solid var(--color-md-outline-variant);
+  font-weight: 500;
+  transition: all 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+.md3-btn-tonal:hover {
+  background-color: var(--color-surface-3);
+  border-color: var(--color-md-outline);
+  transform: translateY(-1px);
+}
+.md3-btn-tonal:active {
+  transform: scale(0.98);
+}
+
+/* MD3 Component: Filter / Assist Chip */
+.md3-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 8px;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  background-color: var(--color-surface-1);
+  border: 1px solid var(--color-md-outline-variant);
+  color: var(--color-md-on-surface);
+  transition: all 0.15s ease;
+}
+.md3-chip:hover {
+  background-color: var(--color-surface-2);
+  border-color: var(--color-md-outline);
+}
+
+/* MD3 Component: Elevated Card (10px radius matching theme.dart) */
+.md3-card-elevated {
+  border-radius: 10px;
+  background-color: var(--color-surface-1);
+  border: 1px solid var(--color-md-outline-variant);
+  transition: all 0.2s cubic-bezier(0.05, 0.7, 0.1, 1.0);
+}
+.md3-card-elevated:hover {
+  background-color: var(--color-surface-2);
+  border-color: var(--color-md-outline);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Tactile keycap element for shortcuts */
 .keycap {
   display: inline-flex;
   align-items: center;
@@ -74,25 +218,25 @@ body {
   line-height: 1;
   padding: 0.25rem 0.45rem;
   border-radius: 4px;
-  background: #18191E;
-  border: 1px solid #2F3138;
-  border-bottom: 2px solid #22242B;
-  color: #D4D4D8;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-md-outline-variant);
+  border-bottom: 2px solid var(--color-surface-0);
+  color: var(--color-md-on-surface);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
-/* Custom scrollbars for technical aesthetic */
+/* Custom MD3 Technical Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0E0E11;
+  background: var(--color-surface-0);
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272A;
+  background: var(--color-surface-3);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3F3F46;
+  background: var(--color-surface-4);
 }

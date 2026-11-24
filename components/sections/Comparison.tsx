@@ -43,37 +43,37 @@ export function Comparison() {
         <span className="font-mono text-xs uppercase tracking-widest text-[#F59E0B]">
           Objective Assessment
         </span>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#EBEBF0] tracking-tight">
           Every alternative has a trade-off. This one doesn&apos;t.
         </h2>
-        <p className="text-sm sm:text-base text-[#A1A1AA]">
-          Compare the realities of online converters, proprietary desktop bloatware, bare CLI, and ctrl+video.
+        <p className="text-sm sm:text-base text-[#9EA0AB]">
+          Compare online converters, proprietary desktop software, bare CLI, and ctrl+video.
         </p>
       </div>
 
-      <div className="overflow-x-auto border border-[#27272A] rounded-xl bg-[#131316] shadow-xl">
+      <div className="overflow-x-auto border border-[#2E2E38] rounded-[16px] bg-[#17171C] shadow-xl">
         <table className="w-full text-left border-collapse min-w-[720px]">
           <thead>
-            <tr className="border-b border-[#27272A] bg-[#18191E] font-mono text-xs text-[#A1A1AA]">
+            <tr className="border-b border-[#2E2E38] bg-[#22222A] font-mono text-xs text-[#9EA0AB]">
               <th className="p-4 w-1/4">Capability / Dimension</th>
               <th className="p-4 w-1/5 text-[#EF4444]">Web Converters</th>
-              <th className="p-4 w-1/5 text-[#F59E0B]">Bloated GUIs</th>
-              <th className="p-4 w-1/5 text-[#A1A1AA]">Raw CLI</th>
-              <th className="p-4 w-1/4 text-[#22C55E] bg-[#1E1F24] border-x border-[#27272A]">
-                ctrl+video
+              <th className="p-4 w-1/5 text-[#F59E0B]">Commercial GUIs</th>
+              <th className="p-4 w-1/5 text-[#9EA0AB]">Raw CLI</th>
+              <th className="p-4 w-1/4 text-[#10B981] bg-[#2E2E38] border-x border-[#2E2E38]">
+                ctrl+video (MD3)
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#22242B] text-xs">
+          <tbody className="divide-y divide-[#2E2E38] text-xs">
             {rows.map((r, i) => (
-              <tr key={i} className="hover:bg-[#16171C] transition-colors">
-                <td className="p-4 font-mono font-medium text-white">{r.feature}</td>
-                <td className="p-4 text-[#A1A1AA]">{r.web}</td>
-                <td className="p-4 text-[#A1A1AA]">{r.gui}</td>
-                <td className="p-4 text-[#A1A1AA]">{r.cli}</td>
-                <td className="p-4 text-white font-medium bg-[#1A1B20] border-x border-[#27272A]">
+              <tr key={i} className="hover:bg-[#22222A]/70 transition-colors">
+                <td className="p-4 font-mono font-medium text-[#EBEBF0]">{r.feature}</td>
+                <td className="p-4 text-[#9EA0AB]">{r.web}</td>
+                <td className="p-4 text-[#9EA0AB]">{r.gui}</td>
+                <td className="p-4 text-[#9EA0AB]">{r.cli}</td>
+                <td className="p-4 text-white font-medium bg-[#22222A] border-x border-[#2E2E38]">
                   <span className="flex items-start gap-1.5">
-                    <span className="text-[#22C55E]">✓</span>
+                    <span className="text-[#10B981] font-bold">✓</span>
                     <span>{r.ctrl}</span>
                   </span>
                 </td>

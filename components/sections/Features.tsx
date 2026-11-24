@@ -10,48 +10,48 @@ export function Features() {
       id: 'preview',
       badge: 'libmpv Integration',
       title: 'In-App Low Bandwidth Stream Preview',
-      desc: 'Preview video before committing bandwidth. ctrl+video hooks directly into libmpv to stream manifests instantly without caching large temporary files on your disk.',
+      desc: 'Preview video manifests before committing local storage or network data. ctrl+video binds directly to libmpv C APIs to stream directly into the workspace canvas without downloading intermediate chunks.',
       shortcut: 'Space · ← 5s · → 5s',
       detailList: [
-        'HLS / DASH manifest stream preview',
-        'Hardware-accelerated rendering on Linux, macOS, and Windows',
-        'Low memory footprint via native C API bindings',
+        'Hardware accelerated OpenGL/Vulkan rendering on Linux, macOS, and Windows',
+        'Direct DASH / HLS stream parsing with zero disk cache overhead',
+        'Low RAM footprint via native desktop bindings',
       ],
     },
     {
       id: 'trimmer',
       badge: 'Frame-Accurate Cuts',
       title: 'Sub-Second Visual Timeline Trimmer',
-      desc: 'Stop downloading multi-gigabyte vods just to grab a 15-second soundbite. Scrub to exact frames, tap [I] and [O], and extract only the required slice directly.',
+      desc: 'Never download a 2-hour recording just to grab a 10-second reference clip. Scrub to the exact keyframe, tap [I] and [O], and extract only the selected time range directly.',
       shortcut: 'I: In Point · O: Out Point',
       detailList: [
-        'Exact Mode: re-encodes cut boundaries for millisecond precision',
+        'Exact Mode: re-encodes cut boundaries for millisecond precision cuts',
         'Fast Mode: stream-copy cut at nearest keyframe with zero quality loss',
-        'Direct download slice via yt-dlp --download-sections',
+        'Direct slice download via yt-dlp --download-sections',
       ],
     },
     {
       id: 'codecs',
       badge: 'Granular Stream Control',
       title: 'AV1, VP9, HDR, and Lossless Audio',
-      desc: 'Web downloaders artificially lock you out of 4K, 60FPS, or raw codecs. ctrl+video exposes every raw video and audio track available on the upstream server.',
+      desc: 'Web converters downgrade formats and limit output to 720p. ctrl+video exposes every raw stream published upstream, giving you full control over codecs and containers.',
       shortcut: 'Bitrate · FPS · Dynamic Range',
       detailList: [
-        'AV1, VP9, H.264 video streams up to 8K HDR',
-        'Lossless FLAC, native Opus, and 320kbps MP3 extraction',
-        'Container remuxing: MP4, MKV, and WebM',
+        'AV1, VP9, and H.264 video streams up to 8K HDR10',
+        'Lossless FLAC, native Opus, and 320kbps MP3 audio extraction',
+        'Lossless container remuxing: MP4, MKV, and WebM',
       ],
     },
     {
       id: 'keyboard',
       badge: 'Power User UX',
-      title: 'Keyboard-First Command Palette',
-      desc: 'Work at full terminal speed with tactile desktop ergonomics. Hit Ctrl+K to paste links, jump to formats, switch presets, or configure sidecar engines without touching the mouse.',
+      title: 'Tactile Keyboard-First Command Palette',
+      desc: 'Execute every command at terminal speed. Hit Ctrl+K to paste links, jump to formats, switch presets, or trigger self-healing updates without reaching for the mouse.',
       shortcut: 'Ctrl + K / Cmd + K',
       detailList: [
-        'Global fuzzy search across actions and stream history',
-        'Zero bloat, two-pane viewport fitted layout',
-        'Persistent SQLite download log with one-click re-open',
+        'Fuzzy search across active downloads, stream history, and actions',
+        'Two-pane viewport fitted layout with zero unnecessary scrolling',
+        'Local SQLite audit log with one-click output folder open',
       ],
     },
   ];
@@ -64,55 +64,55 @@ export function Features() {
         <span className="font-mono text-xs uppercase tracking-widest text-[#F59E0B]">
           Engineered for Precision
         </span>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#EBEBF0] tracking-tight">
           Every tool you need. Zero compromises.
         </h2>
-        <p className="text-sm sm:text-base text-[#A1A1AA]">
-          Designed specifically for digital creators, archivists, sound engineers, and power users who need surgical control over video assets.
+        <p className="text-sm sm:text-base text-[#9EA0AB]">
+          Built for video editors, content creators, researchers, and archivists who demand surgical media extraction.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Feature Tabs (5 cols) */}
-        <div className="lg:col-span-5 space-y-2">
+        {/* Left: MD3 Segmented Feature Cards (5 cols) */}
+        <div className="lg:col-span-5 space-y-3">
           {features.map((f, i) => (
             <button
               key={f.id}
               type="button"
               onClick={() => setActiveTab(i)}
-              className={`w-full text-left p-4 rounded-lg border transition-all hover-lift ${
+              className={`w-full text-left p-4 rounded-[10px] border transition-all md3-state-layer ${
                 activeTab === i
-                  ? 'bg-[#18191E] border-[#F59E0B]/60 shadow-md shadow-[#F59E0B]/10'
-                  : 'bg-[#131316] border-[#27272A] hover:border-[#383A42]'
+                  ? 'bg-[#22222A] border-[#F59E0B] shadow-lg shadow-[#F59E0B]/10 ring-1 ring-[#F59E0B]/20'
+                  : 'bg-[#17171C] border-[#2E2E38] hover:border-[#4A4B56]'
               }`}
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-mono text-[#F59E0B]">
+                <span className="text-[11px] font-mono text-[#F59E0B] font-semibold">
                   {f.badge}
                 </span>
-                <span className="text-[10px] font-mono text-[#71717A] bg-[#1E1F24] px-1.5 py-0.5 rounded">
+                <span className="text-[10px] font-mono text-[#9EA0AB] bg-[#2E2E38] px-2 py-0.5 rounded-full">
                   {f.shortcut}
                 </span>
               </div>
-              <h3 className="text-sm font-semibold text-white mb-1">
+              <h3 className="text-sm font-semibold text-[#EBEBF0] mb-1">
                 {f.title}
               </h3>
-              <p className="text-xs text-[#A1A1AA] line-clamp-2">
+              <p className="text-xs text-[#9EA0AB] line-clamp-2">
                 {f.desc}
               </p>
             </button>
           ))}
         </div>
 
-        {/* Right Column: Live Showcase of Selected Feature (7 cols) */}
-        <div className="lg:col-span-7 bg-[#131316] border border-[#27272A] rounded-xl p-6 sm:p-8 flex flex-col justify-between min-h-[400px]">
+        {/* Right: Active Feature Deep-Dive Card (7 cols) - Surface Level 1 */}
+        <div className="lg:col-span-7 bg-[#17171C] border border-[#2E2E38] rounded-[16px] p-6 sm:p-8 flex flex-col justify-between min-h-[420px] shadow-xl">
           <div className="space-y-6">
-            <div className="flex items-center justify-between border-b border-[#22242B] pb-4">
+            <div className="flex items-center justify-between border-b border-[#2E2E38] pb-4">
               <div>
                 <span className="text-xs font-mono uppercase tracking-wider text-[#F59E0B]">
                   Feature Deep Dive
                 </span>
-                <h3 className="text-xl font-bold text-white mt-1">
+                <h3 className="text-xl font-bold text-[#EBEBF0] mt-1">
                   {current.title}
                 </h3>
               </div>
@@ -121,18 +121,18 @@ export function Features() {
               </span>
             </div>
 
-            <p className="text-sm text-[#D4D4D8] leading-relaxed">
+            <p className="text-sm text-[#EBEBF0] leading-relaxed">
               {current.desc}
             </p>
 
             <div className="space-y-3 pt-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#71717A] block">
+              <span className="text-xs font-mono uppercase tracking-wider text-[#9EA0AB] block">
                 Technical Highlights
               </span>
-              <ul className="space-y-2">
+              <ul className="space-y-2.5">
                 {current.detailList.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-xs text-[#A1A1AA]">
-                    <span className="text-[#22C55E] mt-0.5">✓</span>
+                  <li key={idx} className="flex items-start gap-2.5 text-xs text-[#9EA0AB]">
+                    <span className="text-[#10B981] mt-0.5 font-bold">✓</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -140,9 +140,9 @@ export function Features() {
             </div>
           </div>
 
-          <div className="mt-8 pt-4 border-t border-[#22242B] flex items-center justify-between text-xs font-mono text-[#71717A]">
-            <span>100% Native Desktop Processing</span>
-            <span className="text-[#F59E0B]">yt-dlp core v2026.11</span>
+          <div className="mt-8 pt-4 border-t border-[#2E2E38] flex items-center justify-between text-xs font-mono text-[#9EA0AB]">
+            <span>Material Design 3 Architecture</span>
+            <span className="text-[#F59E0B] font-semibold">yt-dlp Core v2026.11</span>
           </div>
         </div>
       </div>

@@ -34,10 +34,10 @@ export function FAQ() {
         <span className="font-mono text-xs uppercase tracking-widest text-[#F59E0B]">
           Answers to Common Questions
         </span>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#EBEBF0] tracking-tight">
           Frequently Asked Questions
         </h2>
-        <p className="text-sm text-[#A1A1AA]">
+        <p className="text-sm text-[#9EA0AB]">
           Everything you need to know about ctrl+video, privacy, and desktop architecture.
         </p>
       </div>
@@ -48,20 +48,20 @@ export function FAQ() {
           return (
             <div
               key={i}
-              className="border border-[#27272A] rounded-lg bg-[#131316] overflow-hidden transition-colors"
+              className="border border-[#2E2E38] rounded-[10px] bg-[#17171C] overflow-hidden transition-all"
             >
               <button
                 type="button"
                 onClick={() => setOpenIdx(isOpen ? null : i)}
-                className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-white hover:text-[#F59E0B] transition-colors"
+                className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-[#EBEBF0] hover:text-[#F59E0B] transition-colors"
               >
                 <span>{f.q}</span>
-                <span className="font-mono text-xs text-[#71717A] ml-2">
+                <span className="font-mono text-xs text-[#9EA0AB] w-6 h-6 rounded-full bg-[#22222A] flex items-center justify-center">
                   {isOpen ? '−' : '+'}
                 </span>
               </button>
               {isOpen && (
-                <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 text-xs sm:text-sm text-[#A1A1AA] leading-relaxed border-t border-[#1C1D21]">
+                <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 text-xs sm:text-sm text-[#9EA0AB] leading-relaxed border-t border-[#2E2E38]">
                   {f.a}
                 </div>
               )}

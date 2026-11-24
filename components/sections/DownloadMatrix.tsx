@@ -25,10 +25,10 @@ export function DownloadMatrix({ release, detectedOS = 'unknown' }: Props) {
         <span className="font-mono text-xs uppercase tracking-widest text-[#F59E0B]">
           Zero Configuration Packages
         </span>
-        <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#EBEBF0] tracking-tight">
           Download ctrl+video for your platform.
         </h2>
-        <p className="text-sm sm:text-base text-[#A1A1AA]">
+        <p className="text-sm sm:text-base text-[#9EA0AB]">
           Latest version: <strong className="text-white font-mono">{release.version}</strong>. Standalone self-updating binaries bundled with verified dependencies.
         </p>
       </div>
@@ -42,32 +42,32 @@ export function DownloadMatrix({ release, detectedOS = 'unknown' }: Props) {
           return (
             <div
               key={p.id}
-              className={`rounded-xl border p-6 flex flex-col justify-between transition-all hover-lift ${
+              className={`rounded-[16px] border p-6 flex flex-col justify-between transition-all md3-state-layer ${
                 isTargetOS
-                  ? 'bg-[#181920] border-[#F59E0B]/60 ring-1 ring-[#F59E0B]/30 shadow-xl shadow-[#F59E0B]/10'
-                  : 'bg-[#131316] border-[#27272A] hover:border-[#383A42]'
+                  ? 'bg-[#17171C] border-[#F59E0B] ring-2 ring-[#F59E0B]/20 shadow-xl shadow-[#F59E0B]/10'
+                  : 'bg-[#17171C] border-[#2E2E38] hover:border-[#4A4B56]'
               }`}
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-white">{p.label}</h3>
+                  <h3 className="text-xl font-bold text-[#EBEBF0]">{p.label}</h3>
                   {isTargetOS && (
-                    <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#F59E0B] text-black font-semibold">
+                    <span className="font-mono text-[10px] px-2.5 py-0.5 rounded-full bg-[#F59E0B] text-black font-semibold">
                       Your OS Detected
                     </span>
                   )}
                 </div>
 
                 <div className="space-y-1 font-mono text-xs">
-                  <div className="text-[#A1A1AA]">{p.architecture}</div>
-                  <div className="text-[11px] text-[#71717A]">{p.formatBadge}</div>
+                  <div className="text-[#9EA0AB]">{p.architecture}</div>
+                  <div className="text-[11px] text-[#4A4B56]">{p.formatBadge}</div>
                 </div>
 
-                {/* Primary Download Button */}
+                {/* Primary Download Button (MD3 Filled Button) */}
                 <a
                   href={primary.url}
                   download
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#F59E0B] text-black font-semibold text-xs hover:bg-[#D97706] transition-all btn-press shadow"
+                  className="md3-btn-filled w-full py-2.5 text-xs gap-2 shadow"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
                     <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
@@ -77,15 +77,15 @@ export function DownloadMatrix({ release, detectedOS = 'unknown' }: Props) {
                   <span className="opacity-80">({(primary.size / 1048576).toFixed(1)} MB)</span>
                 </a>
 
-                {/* Secondary Option (e.g. Tarball or ZIP) */}
+                {/* Secondary Option (MD3 Tonal Button) */}
                 {secondary && (
                   <div className="pt-1">
                     <a
                       href={secondary.url}
                       download
-                      className="text-xs font-mono text-[#A1A1AA] hover:text-white flex items-center justify-between px-2 py-1.5 rounded bg-[#18191E] border border-[#27272A] hover:border-[#383A42] transition-colors"
+                      className="md3-btn-tonal w-full py-2 text-xs font-mono justify-between px-3"
                     >
-                      <span>Also available: {secondary.name}</span>
+                      <span className="truncate mr-2">Also: {secondary.name}</span>
                       <span>{(secondary.size / 1048576).toFixed(1)} MB</span>
                     </a>
                   </div>
@@ -93,7 +93,7 @@ export function DownloadMatrix({ release, detectedOS = 'unknown' }: Props) {
 
                 {/* Install Command */}
                 <div className="pt-2">
-                  <div className="flex items-center justify-between text-[10px] font-mono text-[#71717A] mb-1">
+                  <div className="flex items-center justify-between text-[10px] font-mono text-[#9EA0AB] mb-1">
                     <span>Quick Command</span>
                     <button
                       type="button"
@@ -103,16 +103,16 @@ export function DownloadMatrix({ release, detectedOS = 'unknown' }: Props) {
                       {copiedId === p.id ? 'Copied ✓' : 'Copy'}
                     </button>
                   </div>
-                  <pre className="p-2.5 rounded bg-[#0A0A0C] border border-[#22242B] font-mono text-[10px] text-[#A1A1AA] overflow-x-auto whitespace-pre">
+                  <pre className="p-3 rounded-[10px] bg-[#0F0F12] border border-[#2E2E38] font-mono text-[10px] text-[#9EA0AB] overflow-x-auto whitespace-pre">
                     {p.installCommand}
                   </pre>
                 </div>
               </div>
 
-              {/* SHA-256 Digest Info */}
-              <div className="mt-6 pt-3 border-t border-[#22242B] text-[10px] font-mono text-[#71717A] truncate">
+              {/* SHA-256 Digest */}
+              <div className="mt-6 pt-3 border-t border-[#2E2E38] text-[10px] font-mono text-[#9EA0AB] truncate">
                 <span>SHA-256: </span>
-                <span className="text-[#A1A1AA]">
+                <span className="text-[#EBEBF0]">
                   {primary.digest ? primary.digest.replace('sha256:', '').slice(0, 16) + '...' : 'Available on GitHub'}
                 </span>
               </div>

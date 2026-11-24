@@ -21,57 +21,57 @@ export function AppFrame() {
   ];
 
   return (
-    <div className="w-full rounded-xl border border-[#27272A] bg-[#131316] shadow-2xl shadow-black/80 overflow-hidden font-sans text-xs">
-      {/* Title Bar */}
-      <div className="h-9 bg-[#18191E] border-b border-[#27272A] px-3.5 flex items-center justify-between select-none">
+    <div className="w-full rounded-[16px] border border-[#2E2E38] bg-[#17171C] shadow-2xl shadow-black/80 overflow-hidden font-sans text-xs">
+      {/* MD3 Desktop Title Bar (Window Controls + System Status) */}
+      <div className="h-10 bg-[#17171C] border-b border-[#2E2E38] px-4 flex items-center justify-between select-none">
         <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#EF4444]/80" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#22C55E]/80" />
-          <span className="ml-2 font-mono text-[11px] text-[#A1A1AA]">
-            ctrl+video — Interactive Studio Workspace
+          <div className="w-3 h-3 rounded-full bg-[#EF4444]/90" />
+          <div className="w-3 h-3 rounded-full bg-[#F59E0B]/90" />
+          <div className="w-3 h-3 rounded-full bg-[#10B981]/90" />
+          <span className="ml-3 font-mono text-[11px] text-[#EBEBF0] font-medium tracking-tight">
+            ctrl+video · Flutter MD3 Native Workspace
           </span>
         </div>
-        <div className="flex items-center gap-2 font-mono text-[10px] text-[#71717A]">
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]" /> yt-dlp 2026.11 (local)
+        <div className="flex items-center gap-2 font-mono text-[10px] text-[#9EA0AB]">
+          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#22222A] text-[#10B981]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" /> yt-dlp Engine Ready
           </span>
           <span>·</span>
-          <span>libmpv 0.38</span>
+          <span>libmpv v0.38</span>
         </div>
       </div>
 
-      {/* Two-Pane Workspace */}
+      {/* Two-Pane Workspace Structure */}
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[460px]">
-        {/* Left Pane: Stream Inspector & Format Picker (5 cols) */}
-        <div className="lg:col-span-5 p-4 border-b lg:border-b-0 lg:border-r border-[#27272A] flex flex-col justify-between bg-[#111215]">
-          <div className="space-y-3.5">
-            {/* URL Input Bar */}
+        {/* Left Pane: Stream Inspector (5 cols) - Surface Level 1 */}
+        <div className="lg:col-span-5 p-4 border-b lg:border-b-0 lg:border-r border-[#2E2E38] flex flex-col justify-between bg-[#17171C]">
+          <div className="space-y-4">
+            {/* MD3 Text Field Container */}
             <div>
-              <label className="text-[10px] font-mono uppercase text-[#71717A] tracking-wider mb-1 block">
-                Target URL / Stream Source
+              <label className="text-[10px] font-mono uppercase text-[#9EA0AB] tracking-wider mb-1.5 block">
+                Source Stream URL
               </label>
-              <div className="flex items-center gap-2 px-2.5 py-1.5 bg-[#18191E] border border-[#27272A] rounded font-mono text-[11px] text-[#F4F4F5]">
+              <div className="flex items-center gap-2 px-3 py-2 bg-[#22222A] border border-[#4A4B56] rounded-[10px] font-mono text-[11px] text-[#EBEBF0] focus-within:border-[#F59E0B] focus-within:ring-1 focus-within:ring-[#F59E0B] transition-all">
                 <span className="text-[#F59E0B] font-bold">❯</span>
-                <span className="truncate text-[#D4D4D8]">
+                <span className="truncate text-[#EBEBF0]">
                   https://www.youtube.com/watch?v=dQw4w9WgXcQ
                 </span>
-                <span className="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-[#27272A] text-[#22C55E]">
+                <span className="ml-auto text-[9px] px-2 py-0.5 rounded-full bg-[#17171C] text-[#10B981] font-semibold">
                   200 OK
                 </span>
               </div>
             </div>
 
-            {/* Media Mode Toggle Tabs */}
-            <div className="flex items-center justify-between border-b border-[#22242B] pb-2">
-              <div className="flex gap-2">
+            {/* MD3 Segmented Button for Media Mode */}
+            <div className="flex items-center justify-between border-b border-[#2E2E38] pb-3">
+              <div className="inline-flex rounded-full bg-[#22222A] p-0.5 border border-[#2E2E38]">
                 <button
                   type="button"
                   onClick={() => setActiveTab('video')}
-                  className={`px-2.5 py-1 rounded font-mono text-[11px] transition-colors ${
+                  className={`px-3 py-1 rounded-full font-mono text-[11px] transition-all ${
                     activeTab === 'video'
-                      ? 'bg-[#1E1F24] text-white border border-[#32353B]'
-                      : 'text-[#71717A] hover:text-[#D4D4D8]'
+                      ? 'bg-[#EBEBF0] text-[#0F0F12] font-semibold shadow-sm'
+                      : 'text-[#9EA0AB] hover:text-[#EBEBF0]'
                   }`}
                 >
                   Video + Audio
@@ -79,217 +79,213 @@ export function AppFrame() {
                 <button
                   type="button"
                   onClick={() => setActiveTab('audio')}
-                  className={`px-2.5 py-1 rounded font-mono text-[11px] transition-colors ${
+                  className={`px-3 py-1 rounded-full font-mono text-[11px] transition-all ${
                     activeTab === 'audio'
-                      ? 'bg-[#1E1F24] text-white border border-[#32353B]'
-                      : 'text-[#71717A] hover:text-[#D4D4D8]'
+                      ? 'bg-[#EBEBF0] text-[#0F0F12] font-semibold shadow-sm'
+                      : 'text-[#9EA0AB] hover:text-[#EBEBF0]'
                   }`}
                 >
-                  Audio Only (Extract)
+                  Audio Extraction
                 </button>
               </div>
-              <span className="text-[10px] text-[#71717A] font-mono">
+              <span className="text-[10px] text-[#9EA0AB] font-mono">
                 {activeTab === 'video' ? '4 Streams' : '3 Tracks'}
               </span>
             </div>
 
-            {/* Stream List */}
-            <div className="space-y-1.5 max-h-[220px] overflow-y-auto pr-1">
+            {/* Stream List (MD3 Outlined Cards - 10px Radius) */}
+            <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
               {activeTab === 'video'
                 ? videoStreams.map((s) => (
                     <div
                       key={s.id}
                       onClick={() => setSelectedFormat(s.id)}
-                      className={`p-2.5 rounded cursor-pointer border transition-all flex items-center justify-between ${
+                      className={`p-3 rounded-[10px] cursor-pointer border transition-all flex items-center justify-between ${
                         selectedFormat === s.id
-                          ? 'bg-[#1F2027] border-[#F59E0B]/50 ring-1 ring-[#F59E0B]/20'
-                          : 'bg-[#16171C] border-[#22242B] hover:border-[#2F3138]'
+                          ? 'bg-[#2E2E38] border-[#F59E0B] ring-1 ring-[#F59E0B]/30'
+                          : 'bg-[#22222A] border-[#2E2E38] hover:border-[#4A4B56]'
                       }`}
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2.5">
                         <input
                           type="radio"
                           name="format"
                           checked={selectedFormat === s.id}
                           onChange={() => setSelectedFormat(s.id)}
-                          className="accent-[#F59E0B]"
+                          className="accent-[#F59E0B] w-3.5 h-3.5"
                         />
                         <div>
-                          <div className="flex items-center gap-1.5 font-mono text-[11px] text-white font-medium">
+                          <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#EBEBF0] font-semibold">
                             <span>{s.res}</span>
-                            <span className="text-[#A1A1AA]">({s.fps})</span>
+                            <span className="text-[#9EA0AB]">({s.fps})</span>
                             {s.hdr && (
-                              <span className="text-[9px] px-1 rounded bg-[#F59E0B]/20 text-[#F59E0B] font-bold">
+                              <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-[#451A03] text-[#FDE68A] font-bold">
                                 HDR
                               </span>
                             )}
                           </div>
-                          <span className="text-[10px] text-[#71717A] font-mono">
+                          <span className="text-[10px] text-[#9EA0AB] font-mono">
                             {s.codec} · {s.bitrate}
                           </span>
                         </div>
                       </div>
-                      <span className="font-mono text-[11px] text-[#D4D4D8]">{s.size}</span>
+                      <span className="font-mono text-[11px] text-[#EBEBF0] font-medium">{s.size}</span>
                     </div>
                   ))
                 : audioStreams.map((a) => (
                     <div
                       key={a.id}
                       onClick={() => setSelectedFormat(a.id)}
-                      className={`p-2.5 rounded cursor-pointer border transition-all flex items-center justify-between ${
+                      className={`p-3 rounded-[10px] cursor-pointer border transition-all flex items-center justify-between ${
                         selectedFormat === a.id
-                          ? 'bg-[#1F2027] border-[#F59E0B]/50 ring-1 ring-[#F59E0B]/20'
-                          : 'bg-[#16171C] border-[#22242B] hover:border-[#2F3138]'
+                          ? 'bg-[#2E2E38] border-[#F59E0B] ring-1 ring-[#F59E0B]/30'
+                          : 'bg-[#22222A] border-[#2E2E38] hover:border-[#4A4B56]'
                       }`}
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2.5">
                         <input
                           type="radio"
                           name="format"
                           checked={selectedFormat === a.id}
                           onChange={() => setSelectedFormat(a.id)}
-                          className="accent-[#F59E0B]"
+                          className="accent-[#F59E0B] w-3.5 h-3.5"
                         />
                         <div>
-                          <div className="font-mono text-[11px] text-white font-medium">
+                          <div className="font-mono text-[11px] text-[#EBEBF0] font-semibold">
                             {a.codec}
                           </div>
-                          <span className="text-[10px] text-[#71717A] font-mono">
+                          <span className="text-[10px] text-[#9EA0AB] font-mono">
                             {a.bitrate}
                           </span>
                         </div>
                       </div>
-                      <span className="font-mono text-[11px] text-[#D4D4D8]">{a.size}</span>
+                      <span className="font-mono text-[11px] text-[#EBEBF0] font-medium">{a.size}</span>
                     </div>
                   ))}
             </div>
           </div>
 
-          {/* Download Action Footer in Left Pane */}
-          <div className="pt-3 border-t border-[#22242B] mt-2 flex items-center justify-between">
-            <span className="text-[10px] text-[#71717A] font-mono">
-              Output: <span className="text-white">MP4 / MKV</span>
+          {/* Action Footer */}
+          <div className="pt-3 border-t border-[#2E2E38] mt-2 flex items-center justify-between">
+            <span className="text-[10px] text-[#9EA0AB] font-mono">
+              Container: <strong className="text-white">MP4 / MKV</strong>
             </span>
             <button
               type="button"
-              className="px-3.5 py-1.5 rounded bg-[#F59E0B] text-black font-semibold text-xs hover:bg-[#D97706] transition-all btn-press flex items-center gap-1.5"
+              className="md3-btn-filled px-4 py-2 text-xs gap-1.5 shadow-md"
             >
               <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
                 <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
                 <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
               </svg>
-              <span>Extract Selected</span>
+              <span>Extract Stream</span>
             </button>
           </div>
         </div>
 
-        {/* Right Pane: Video Preview & Precision Timeline Trimmer (7 cols) */}
-        <div className="lg:col-span-7 p-4 flex flex-col justify-between bg-[#0F1013]">
-          {/* libmpv Player Canvas Mockup */}
-          <div className="relative aspect-video w-full rounded-lg bg-[#08080A] border border-[#22242B] overflow-hidden flex flex-col items-center justify-center group">
-            {/* Video stream content representation */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-black via-[#16171F] to-[#252836] opacity-75" />
+        {/* Right Pane: Video Preview & Scrubber (7 cols) - Surface Level 0 */}
+        <div className="lg:col-span-7 p-4 flex flex-col justify-between bg-[#0F0F12]">
+          {/* libmpv Player Canvas */}
+          <div className="relative aspect-video w-full rounded-[12px] bg-[#0A0A0D] border border-[#2E2E38] overflow-hidden flex flex-col items-center justify-center group">
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#0F0F12] via-[#17171C] to-[#22222A] opacity-80" />
 
             <div className="relative z-10 text-center space-y-2">
-              <div className="w-12 h-12 rounded-full bg-[#1E1F24]/90 border border-white/10 flex items-center justify-center mx-auto text-[#F59E0B] shadow-lg group-hover:scale-105 transition-transform">
+              <div className="w-12 h-12 rounded-full bg-[#22222A] border border-[#4A4B56] flex items-center justify-center mx-auto text-[#F59E0B] shadow-lg group-hover:scale-105 transition-transform">
                 <svg className="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
                 </svg>
               </div>
-              <p className="font-mono text-[11px] text-[#A1A1AA]">
-                Low-bandwidth libmpv Preview Active
+              <p className="font-mono text-[11px] text-[#EBEBF0]">
+                Hardware Accelerated libmpv Stream
               </p>
-              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/60 border border-white/10 font-mono text-[10px] text-[#22C55E]">
-                <span>● Stream Copy Preview</span>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#17171C] border border-[#2E2E38] font-mono text-[10px] text-[#10B981]">
+                <span>● Direct Stream Manifest</span>
                 <span>·</span>
-                <span>0.8 Mbps buffer</span>
+                <span>Sub-second Keyframe Seek</span>
               </div>
             </div>
 
             {/* Timestamp Badge */}
-            <div className="absolute bottom-2.5 right-3 font-mono text-[11px] text-white bg-black/80 px-2 py-0.5 rounded border border-white/10">
+            <div className="absolute bottom-3 right-3 font-mono text-[11px] text-white bg-black/80 px-2.5 py-1 rounded-md border border-white/10">
               00:01:42.500 / 00:03:32.000
             </div>
           </div>
 
-          {/* Frame-Accurate Timeline Trimmer */}
-          <div className="mt-3.5 space-y-2.5 pt-2 border-t border-[#22242B]">
+          {/* Precision Timeline Scrubber */}
+          <div className="mt-4 space-y-2.5 pt-2 border-t border-[#2E2E38]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="font-mono text-[11px] font-semibold text-white">
+                <span className="font-mono text-[11px] font-semibold text-[#EBEBF0]">
                   Timeline Trimmer
                 </span>
-                <span className="text-[10px] text-[#71717A] font-mono">
-                  Press <span className="keycap text-[9px]">I</span> for In · <span className="keycap text-[9px]">O</span> for Out
+                <span className="text-[10px] text-[#9EA0AB] font-mono">
+                  Press <span className="keycap text-[9px]">I</span> In · <span className="keycap text-[9px]">O</span> Out
                 </span>
               </div>
 
-              {/* Exact vs Fast Mode */}
-              <div className="flex items-center gap-1 bg-[#18191E] p-0.5 rounded border border-[#27272A]">
+              {/* Exact vs Fast Mode (MD3 Pill Toggle) */}
+              <div className="flex items-center gap-1 bg-[#17171C] p-0.5 rounded-full border border-[#2E2E38]">
                 <button
                   type="button"
                   onClick={() => setTrimMode('exact')}
-                  className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors ${
+                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono transition-colors ${
                     trimMode === 'exact'
                       ? 'bg-[#F59E0B] text-black font-semibold'
-                      : 'text-[#A1A1AA] hover:text-white'
+                      : 'text-[#9EA0AB] hover:text-white'
                   }`}
-                  title="Re-encodes boundary cut frames for millisecond exactness"
                 >
                   Exact (Frame-Accurate)
                 </button>
                 <button
                   type="button"
                   onClick={() => setTrimMode('fast')}
-                  className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors ${
+                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono transition-colors ${
                     trimMode === 'fast'
                       ? 'bg-[#F59E0B] text-black font-semibold'
-                      : 'text-[#A1A1AA] hover:text-white'
+                      : 'text-[#9EA0AB] hover:text-white'
                   }`}
-                  title="Instant stream copy cut at nearest keyframe"
                 >
                   Fast (Keyframe)
                 </button>
               </div>
             </div>
 
-            {/* Interactive Visual Scrubber Track */}
-            <div className="relative h-7 bg-[#18191E] rounded border border-[#27272A] overflow-hidden select-none">
-              {/* Entire timeline background wave/ticks */}
-              <div className="absolute inset-0 flex justify-between px-2 items-center opacity-30">
-                {Array.from({ length: 24 }).map((_, i) => (
-                  <div key={i} className={`w-[1px] bg-white ${i % 4 === 0 ? 'h-3.5' : 'h-1.5'}`} />
+            {/* Visual Scrubber Track */}
+            <div className="relative h-8 bg-[#17171C] rounded-[8px] border border-[#2E2E38] overflow-hidden select-none">
+              <div className="absolute inset-0 flex justify-between px-2 items-center opacity-25">
+                {Array.from({ length: 28 }).map((_, i) => (
+                  <div key={i} className={`w-[1px] bg-white ${i % 4 === 0 ? 'h-4' : 'h-2'}`} />
                 ))}
               </div>
 
-              {/* Selected trimmed region (from 28% to 75%) */}
+              {/* Selected amber trimming slice (secondaryContainer) */}
               <div
-                className="absolute top-0 bottom-0 bg-[#F59E0B]/25 border-x-2 border-[#F59E0B]"
-                style={{ left: '28%', right: '25%' }}
+                className="absolute top-0 bottom-0 bg-[#451A03]/60 border-x-2 border-[#F59E0B]"
+                style={{ left: '25%', right: '30%' }}
               >
-                <div className="absolute -top-0.5 -left-1.5 w-3 h-3 bg-[#F59E0B] rounded-sm flex items-center justify-center text-[7px] text-black font-bold">
+                <div className="absolute -top-0.5 -left-1.5 w-3.5 h-3.5 bg-[#F59E0B] rounded-sm flex items-center justify-center text-[7px] text-black font-bold shadow">
                   I
                 </div>
-                <div className="absolute -top-0.5 -right-1.5 w-3 h-3 bg-[#F59E0B] rounded-sm flex items-center justify-center text-[7px] text-black font-bold">
+                <div className="absolute -top-0.5 -right-1.5 w-3.5 h-3.5 bg-[#F59E0B] rounded-sm flex items-center justify-center text-[7px] text-black font-bold shadow">
                   O
                 </div>
               </div>
 
-              {/* Current Playhead */}
+              {/* Playhead */}
               <div
-                className="absolute top-0 bottom-0 w-0.5 bg-white shadow-md shadow-white/50"
-                style={{ left: '46%' }}
+                className="absolute top-0 bottom-0 w-0.5 bg-white shadow-md shadow-white/80"
+                style={{ left: '48%' }}
               />
             </div>
 
-            {/* Trimming Meta Readings */}
-            <div className="flex items-center justify-between text-[11px] font-mono text-[#A1A1AA]">
+            {/* Trimming Readings */}
+            <div className="flex items-center justify-between text-[11px] font-mono text-[#9EA0AB]">
               <div className="flex items-center gap-2">
                 <span>IN: <strong className="text-white">00:01:14.250</strong></span>
                 <span>OUT: <strong className="text-white">00:02:48.800</strong></span>
               </div>
-              <div className="text-[#22C55E]">
-                Duration: <strong>01:34.550</strong> (Only 42 MB to download)
+              <div className="text-[#10B981] font-medium">
+                Trimmed Size: 42 MB (Saved 88%)
               </div>
             </div>
           </div>
