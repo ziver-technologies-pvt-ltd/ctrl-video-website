@@ -1,0 +1,45 @@
+name: Build and Deploy to Zoho Catalyst
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Build Next.js Application
+        run: npm run build
+        env:
+          GH_OWNER: ziver-technologies-pvt-ltd
+          GH_REPO: ctrl-video
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NEXT_PUBLIC_SITE_URL: https://ctrl-video.ziver.co.in
+
+      - name: Install Zoho Catalyst CLI
+        run: npm install -g zcatalyst-cli
+
+      - name: Deploy to Zoho Catalyst AppSail (Production)
+        run: catalyst deploy --target production
+        env:
+          CATALYST_TOKEN: ${{ secrets.CATALYST_TOKEN }}

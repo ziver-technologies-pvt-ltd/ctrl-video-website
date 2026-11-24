@@ -1,0 +1,10 @@
+{
+  "command": "npm start",
+  "buildPath": ".",
+  "stack": "node20",
+  "memory": 512,
+  "env_variables": {
+    "NODE_ENV": "production",
+    "NEXT_PUBLIC_SITE_URL": "https://ctrl-video.ziver.co.in"
+  }
+}

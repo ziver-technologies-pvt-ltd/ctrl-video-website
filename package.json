@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p ${X_ZOHO_CATALYST_LISTEN_PORT:-3000}",
     "lint": "eslint"
   },
   "dependencies": {

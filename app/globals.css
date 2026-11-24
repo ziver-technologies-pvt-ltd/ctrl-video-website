@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: #0E0E11;
+  --color-bg-raised: #131316;
+  --color-surface: #1E1F24;
+  --color-surface-high: #282A2F;
+  --color-surface-hover: #32353B;
+  --color-accent: #F59E0B;
+  --color-accent-hover: #D97706;
+  --color-accent-muted: #92400E;
+  --color-ink: #F4F4F5;
+  --color-ink-muted: #A1A1AA;
+  --color-ink-subtle: #71717A;
+  --color-border: #27272A;
+  --color-border-subtle: #1C1D21;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+
+  /* tasteskill developer tool design tokens: sharp & tactile */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Taste-skill Motion Layer & Micro-Interactions */
+.hover-lift {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+.hover-lift:active {
+  transform: translateY(0px);
+}
+
+.btn-press {
+  transition: transform 0.08s ease, background-color 0.12s ease, opacity 0.12s ease;
+}
+.btn-press:active {
+  transform: scale(0.985);
+}
+
+/* Keycap tactile element */
+.keycap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0.25rem 0.45rem;
+  border-radius: 4px;
+  background: #18191E;
+  border: 1px solid #2F3138;
+  border-bottom: 2px solid #22242B;
+  color: #D4D4D8;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Custom scrollbars for technical aesthetic */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0E0E11;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3F3F46;
 }

@@ -1,0 +1,6 @@
+{
+  "appsail": {
+    "source": ".",
+    "name": "ctrl-video-web"
+  }
+}
