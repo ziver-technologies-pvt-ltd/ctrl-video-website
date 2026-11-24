@@ -55,8 +55,8 @@ jobs:
           GH_OWNER: ziver-technologies-pvt-ltd
           GH_REPO: ctrl-video
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEXT_PUBLIC_SITE_URL: https://ziver-technologies-pvt-ltd.github.io/ctrl-video-website
-          NEXT_PUBLIC_BASE_PATH: /ctrl-video-website
+          NEXT_PUBLIC_SITE_URL: https://ctrl-video.ziver.co.in
+          NEXT_PUBLIC_BASE_PATH: ""
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
